@@ -1,7 +1,24 @@
 # wellD
-Diagramma delle Classi
+**Logica del progetto**
 
-Point
+La funzione più complessa è quella che riguarda l'estrazione dei pattern che rispettano il requisito di avere almeno N punti su una stessa linea.
+
+Per definire una linea nel piano bastano due punti non coincidenti.
+
+Dato un insieme di punti nel piano, occorre individuare tutte le coppie di punti possibili (x1,y1) (x2,y2).
+
+Per ogni coppia di punti passerà una e una sola linea rappresentata da un'equazione del tipo y = ax + b (con a e b dipendenti dalle coordinate dei due punti). A questo proposito bisogna tenere conto del caso in cui i due punti abbiano la stessa x, nel qual caso l'equazione sarà del tipo x = costante e per gestire questo caso ho introdotto una variabile boolean "vertical" nella classe "Line".
+
+Per ogni linea dovrò quindi verificare quali punti giacciono su quella linea, andando, con quei punti, ad alimentare un pattern (come minimo ci saranno i due punti che hanno generato la linea).
+
+Una volta individuati tutti i pattern, andrò a selezionare solo quelli che rispettano il requisito di avere un numero di punti >= N.
+
+
+	
+
+**Diagramma delle Classi**
+
+*Point*
 
 	Variabili d'istanza: x,y.
   
@@ -11,7 +28,7 @@ Point
   
 	Getters&Setters
 
-Line
+*Line*
 
 	Variabili d'istanza: a, b, vertical.
 	
@@ -22,7 +39,7 @@ Line
 	Getters&Setters
 	
 
-Pattern 
+*Pattern* 
 
 	Variabili d'istanza: patternPoints.
 	
@@ -33,7 +50,7 @@ Pattern
 	Getters&Setters
 	
 
-Util 
+*Util* 
 
 	Variabili d'istanza: 
 	
@@ -45,7 +62,7 @@ Util
 	Getters&Setters
 	
 
-Space   
+*Space*   
 
 	Variabili d'istanza: List<Point>. 
 	
