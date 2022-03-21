@@ -1,33 +1,43 @@
-package patternRecognition_WellD;
+package stefano.pastori.wellD_Maven;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 public class Util {
-	static List<Point> list = new ArrayList<>();
-	
-	static {
-		list.add(new Point(2,4));
-		list.add(new Point(4,8));
-		list.add(new Point(3,6));
-		list.add(new Point(5,10));
-		list.add(new Point(1,1));
-		list.add(new Point(0,0));
-		list.add(new Point(5,5));
-		list.add(new Point(6,1));
-		list.add(new Point(1,5));
-		list.add(new Point(5,0));
-//		list.add(null);
-	}
 	
 	public static List<Point> readPoints() {
-		return rimuoviNull(list);
+		List<Point> points = new ArrayList<>();
+		try {
+			JSONParser parser = new JSONParser();
+			Reader r = new FileReader("points.json");
+			JSONArray jsonArray = (JSONArray) parser.parse(r);//path to the JSON file.
+			for (Object o : jsonArray) {
+				if (o != null) {
+					JSONObject point = (JSONObject) o;
+					double x = (double) point.get("x");
+					double y = (double) point.get("y");
+					System.out.println("x = " + x + ", y = " + y);
+					Point p = new Point(x,y);
+					points.add(p);
+				}
+			}
+		} catch (IOException | ParseException e) {
+			e.printStackTrace();
+		}
+		return points;
 	}
 	
-	//metodo di utilit‡ che data una mappa di punti, restituisce tutte le diverse coppie di punti (non ci sono duplicati)
+	//metodo di utilit√† che data una mappa di punti, restituisce tutte le diverse coppie di punti (non ci sono duplicati)
 	public static List<Point[]> getCouplesOfPoints(Map<Integer, Point> pointsMap) {
 		List<Point[]> couples = new ArrayList<>();
 		for (int i = 0; i < pointsMap.size()-1; i++) {
@@ -41,8 +51,8 @@ public class Util {
 		return couples;
 	}
 	
-	//metodo di utilit‡ che data una lista di coppie di punti, restituisce tutte le linee passanti per le coppie di punti
-	//(possono esserci duplicati se sulla stessa linea giacciono pi˘ punti)
+	//metodo di utilit√† che data una lista di coppie di punti, restituisce tutte le linee passanti per le coppie di punti
+	//(possono esserci duplicati se sulla stessa linea giacciono pi√π punti)
 	public static List<Line> getLines(List<Point[]> couples) {
 		List<Line> lines = new ArrayList<>();
 		for (int i = 0; i < couples.size(); i++) {
@@ -53,23 +63,13 @@ public class Util {
 	}
 	
 	
-	//metodo di utilit‡ che trasforma una lista di punti in mappa di punti
+	//metodo di utilit√† che trasforma una lista di punti in mappa di punti
 	public static Map<Integer, Point> trasformaListaPuntiInMappaPunti(List<Point> points) {
 		Map<Integer, Point> pointsMap = new HashMap<>();
 		for (int i = 0; i < points.size(); i++) {	//da una lista di punti costruisco una mappa, 
-			pointsMap.put(i, points.get(i));		//cioË una lista di punti dove ogni punto ha un identificativo numerico
+			pointsMap.put(i, points.get(i));		//cioÔøΩ una lista di punti dove ogni punto ha un identificativo numerico
 		}
 		return pointsMap;
 	}
 
-	private static List<Point> rimuoviNull(List<Point> points) {
-		Iterator<Point> iterator = list.iterator();
-		while (iterator.hasNext()) {
-			Point p = iterator.next();
-			if (p == null) {	
-				iterator.remove();			//rimuovo tutti gli oggetti null
-			}
-		}
-		return points;
-	}
 }
